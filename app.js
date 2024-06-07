@@ -4,12 +4,17 @@ const vagasRouter = require('./routes/vagas');
 const usersRouter = require('./routes/users');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 
+// Configuração do CORS
+app.use(cors());
+
+// Configuração do Swagger
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',

@@ -11,33 +11,35 @@ const { getUserByLogin } = require('../models/user');
 
 /**
  * @swagger
- * /users/login/{user}/{password}:
- *   get:
+ * /users/login:
+ *   post:
  *     summary: Faz login do usuário
  *     tags: [Usuários]
- *     parameters:
- *       - in: path
- *         name: user
- *         schema:
- *           type: string
- *         required: true
- *         description: O login do usuário
- *       - in: path
- *         name: password
- *         schema:
- *           type: string
- *         required: true
- *         description: A senha do usuário
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user:
+ *                 type: string
+ *                 description: O login do usuário
+ *               password:
+ *                 type: string
+ *                 description: A senha do usuário
+ *             example:
+ *               user: usuario
+ *               password: senha
  *     responses:
  *       200:
  *         description: Login bem-sucedido
  *       401:
  *         description: Falha no login
  */
-router.get('/login/:user/:password', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
-    const user = req.params.user;
-    const password = req.params.password;
+    const { user, password } = req.body;
     const usuario = await getUserByLogin(user);
 
     if (usuario) {

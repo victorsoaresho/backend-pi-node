@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getAllVagas, getVagasByTipo, createVaga, getFiltroId, createFiltro, associateVagaFiltro } = require('../models/vaga');
+const { getAllVagas, getVagasByTipo, createVaga, getFiltroId, createFiltro, associateVagaFiltro, getVagaById } = require('../models/vaga');
 
 /**
  * @swagger
@@ -159,6 +159,44 @@ router.post('/inserir', async (req, res) => {
     await associateVagaFiltro(vagaId, filtroId);
     
     res.json({ success: 'Vaga inserida com sucesso!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /detalhamento/{id}:
+ *   get:
+ *     summary: Retorna o detalhamento de uma vaga pelo ID
+ *     tags: [Vagas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: O ID da vaga
+ *     responses:
+ *       200:
+ *         description: Detalhamento da vaga
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Vaga'
+ *       404:
+ *         description: Vaga não encontrada
+ */
+router.get('/detalhamento/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const vaga = await getVagaById(id);
+
+    if (vaga) {
+      res.json(vaga);
+    } else {
+      res.status(404).json({ error: 'Vaga não encontrada' });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

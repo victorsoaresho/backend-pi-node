@@ -1,5 +1,7 @@
 const db = require('../database');
 
+// Métodos existentes...
+
 const getAllVagas = async () => {
   const [rows, fields] = await db.execute('SELECT * FROM vaga;');
   return rows;
@@ -17,7 +19,6 @@ const getVagasByTipo = async (tipo) => {
   const [rows, fields] = await db.execute(query, [tipo]);
   return rows;
 };
-
 
 const createVaga = async (vaga) => {
   const queryVaga = `
@@ -48,11 +49,18 @@ const associateVagaFiltro = async (vagaId, filtroId) => {
   await db.execute(query, [vagaId, filtroId]);
 };
 
+const getVagaById = async (id) => {
+  const query = "SELECT * FROM vaga WHERE id = ?;";
+  const [rows, fields] = await db.execute(query, [id]);
+  return rows[0];
+};
+
 module.exports = {
   getAllVagas,
   getVagasByTipo,
   createVaga,
   getFiltroId,
   createFiltro,
-  associateVagaFiltro
+  associateVagaFiltro,
+  getVagaById // Exportar o novo método
 };

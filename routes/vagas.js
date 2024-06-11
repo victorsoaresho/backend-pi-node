@@ -121,7 +121,7 @@ router.get('/:tipo', async (req, res) => {
 
 /**
  * @swagger
- * /vagas:
+ * /inserir:
  *   post:
  *     summary: Insere uma nova vaga
  *     tags: [Vagas]
@@ -134,12 +134,21 @@ router.get('/:tipo', async (req, res) => {
  *     responses:
  *       200:
  *         description: Vaga inserida com sucesso
+ *       409:
+ *         description: Vaga já cadastrada
  *       500:
  *         description: Erro ao inserir a vaga
  */
-router.post('/', async (req, res) => {
+router.post('/inserir', async (req, res) => {
   try {
     const vaga = req.body;
+
+    // Verificar se a vaga já está cadastrada
+    const vagasExistentes = await getVagasByTipo(vaga.titulo);
+    if (vagasExistentes.length > 0) {
+      return res.status(409).json({ fail: 'Vaga já cadastrada!' });
+    }
+
     const vagaId = await createVaga(vaga);
     
     let filtroId = await getFiltroId(vaga.tipo_filtro);

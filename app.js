@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors());  // Adicionado para resolver o problema de CORS
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -38,7 +38,9 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use('/vagas', vagasRouter);
+app.use('/vagas', vagasRouter);  // Linha anterior
+app.use('/inserir', vagasRouter);  // Nova linha para a rota /inserir
+
 app.use('/users', usersRouter);
 
 app.listen(PORT, () => {

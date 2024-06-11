@@ -4,11 +4,13 @@ const vagasRouter = require('./routes/vagas');
 const usersRouter = require('./routes/users');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const swaggerOptions = {
   swaggerDefinition: {

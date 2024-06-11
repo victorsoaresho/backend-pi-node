@@ -7,15 +7,17 @@ const getAllVagas = async () => {
 
 const getVagasByTipo = async (tipo) => {
   const query = `
-    SELECT v.*
-    FROM vaga v
-    JOIN vaga_filtro vf ON v.id = vf.vaga_id
-    JOIN filtro_vaga fv ON vf.filtro_id = fv.id
-    WHERE fv.tipo = ?;
+    SELECT DISTINCT
+      *
+    FROM
+      vaga
+    WHERE
+      titulo REGEXP ?
   `;
   const [rows, fields] = await db.execute(query, [tipo]);
   return rows;
 };
+
 
 const createVaga = async (vaga) => {
   const queryVaga = `

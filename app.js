@@ -16,7 +16,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -25,9 +24,9 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API para gerenciar vagas e usuários',
       contact: {
-        name: 'Seu Nome',
-        url: 'http://seusite.com',
-        email: 'seuemail@dominio.com'
+        name: 'TecJobs',
+        url: '',
+        email: 'victorsoaresho@gmail.com'
       },
       servers: [
         {
@@ -43,8 +42,8 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use('/vagas', vagasRouter);
-app.use('/users', usersRouter);
+app.use('/vagas', vagasRouter); // Endpoint base para vagas
+app.use('/users', usersRouter); // Endpoint base para usuários
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

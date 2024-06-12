@@ -6,7 +6,7 @@ const { getUserByLogin } = require('../models/user');
  * @swagger
  * tags:
  *   name: Usuários
- *   description: API para gerenciar usuários
+ *   descrição: API para gerenciar usuários
  */
 
 /**

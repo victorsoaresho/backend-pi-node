@@ -16,7 +16,7 @@ const { getAllVagas, getVagasByTipo, createVaga, getFiltroId, createFiltro, asso
  *         - requisitos
  *         - data_publicacao
  *         - emprego_id
- *         - tipo_filtro
+ *         - link
  *       properties:
  *         titulo:
  *           type: string
@@ -40,9 +40,9 @@ const { getAllVagas, getVagasByTipo, createVaga, getFiltroId, createFiltro, asso
  *         emprego_id:
  *           type: integer
  *           description: O ID do emprego relacionado
- *         tipo_filtro:
+ *         link:
  *           type: string
- *           description: O tipo de filtro da vaga
+ *           description: O tipo link da vaga
  *       example:
  *         titulo: Desenvolvedor Backend
  *         descricao: Vaga para desenvolvedor backend
@@ -51,7 +51,7 @@ const { getAllVagas, getVagasByTipo, createVaga, getFiltroId, createFiltro, asso
  *         requisitos: Experiência com Node.js
  *         data_publicacao: 2024-06-06
  *         emprego_id: 1
- *         tipo_filtro: Backend
+ *         link: link da vaga
  */
 
 /**
@@ -149,20 +149,16 @@ router.post('/inserir', async (req, res) => {
       return res.status(409).json({ fail: 'Vaga já cadastrada!' });
     }
 
-    const vagaId = await createVaga(vaga);
+    // Criar a vaga no banco de dados
+    await createVaga(vaga);
     
-    let filtroId = await getFiltroId(vaga.tipo_filtro);
-    if (!filtroId) {
-      filtroId = await createFiltro(vaga.tipo_filtro);
-    }
-    
-    await associateVagaFiltro(vagaId, filtroId);
-    
+    // Retornar sucesso
     res.json({ success: 'Vaga inserida com sucesso!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 /**
  * @swagger

@@ -1,7 +1,5 @@
 const db = require('../database');
 
-// Métodos existentes...
-
 const getAllVagas = async () => {
   const [rows, fields] = await db.execute('SELECT * FROM vaga;');
   return rows;
@@ -52,7 +50,7 @@ const associateVagaFiltro = async (vagaId, filtroId) => {
 const getVagaById = async (id) => {
   const query = "SELECT * FROM vaga WHERE id = ?;";
   const [rows, fields] = await db.execute(query, [id]);
-  return rows[0];
+  return rows.length > 0 ? rows[0] : null;
 };
 
 module.exports = {
@@ -62,5 +60,5 @@ module.exports = {
   getFiltroId,
   createFiltro,
   associateVagaFiltro,
-  getVagaById // Exportar o novo método
+  getVagaById
 };

@@ -20,7 +20,7 @@ const getVagasByTipo = async (tipo) => {
 
 const createVaga = async (vaga) => {
   const queryVaga = `
-    INSERT INTO vaga (titulo, descricao, salario, localizacao, requisitos, data_publicacao, emprego_id, tipo_filtro)
+    INSERT INTO vaga (titulo, descricao, salario, localizacao, requisitos, data_publicacao, emprego_id, link)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?);
   `;
   const [result] = await db.execute(queryVaga, [

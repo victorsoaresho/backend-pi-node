@@ -149,20 +149,16 @@ router.post('/inserir', async (req, res) => {
       return res.status(409).json({ fail: 'Vaga já cadastrada!' });
     }
 
-    const vagaId = await createVaga(vaga);
+    // Criar a vaga no banco de dados
+    await createVaga(vaga);
     
-    let filtroId = await getFiltroId(vaga.tipo_filtro);
-    if (!filtroId) {
-      filtroId = await createFiltro(vaga.tipo_filtro);
-    }
-    
-    await associateVagaFiltro(vagaId, filtroId);
-    
+    // Retornar sucesso
     res.json({ success: 'Vaga inserida com sucesso!' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 /**
  * @swagger

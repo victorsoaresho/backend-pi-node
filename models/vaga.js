@@ -49,8 +49,8 @@ const associateVagaFiltro = async (vagaId, filtroId) => {
 
 const getVagaById = async (id) => {
   const query = "SELECT * FROM vaga WHERE id = ?;";
-  const [rows, fields] = await db.execute(query, [tipo]);
-  return rows;
+  const [rows, fields] = await db.execute(query, [id]);
+  return rows.length > 0 ? rows[0] : null;
 };
 
 module.exports = {

@@ -189,7 +189,11 @@ router.post('/inserir', async (req, res) => {
  */
 router.get('/detalhamento/:id', async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const vaga = await getVagaById(id);
 
     if (vaga) {

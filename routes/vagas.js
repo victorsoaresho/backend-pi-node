@@ -58,7 +58,7 @@ const { getAllVagas, getVagasByTipo, createVaga, getFiltroId, createFiltro, asso
  * @swagger
  * tags:
  *   name: Vagas
- *   descrição: API para gerenciar vagas
+ *   description: API para gerenciar vagas
  */
 
 /**

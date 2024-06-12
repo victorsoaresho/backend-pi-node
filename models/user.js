@@ -1,64 +1,59 @@
-const db = require('../database');
+const express = require('express');
+const router = express.Router();
+const { getUserByLogin } = require('../models/user');
 
-const getAllVagas = async () => {
-  const [rows, fields] = await db.execute('SELECT * FROM vaga;');
-  return rows;
-};
+/**
+ * @swagger
+ * tags:
+ *   name: Usuários
+ *   description: API para gerenciar usuários
+ */
 
-const getVagasByTipo = async (tipo) => {
-  const query = `
-    SELECT DISTINCT
-      *
-    FROM
-      vaga
-    WHERE
-      titulo REGEXP ?
-  `;
-  const [rows, fields] = await db.execute(query, [tipo]);
-  return rows;
-};
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Faz login do usuário
+ *     tags: [Usuários]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user:
+ *                 type: string
+ *                 description: O login do usuário
+ *               password:
+ *                 type: string
+ *                 description: A senha do usuário
+ *             example:
+ *               user: usuario
+ *               password: senha
+ *     responses:
+ *       200:
+ *         description: Login bem-sucedido
+ *       401:
+ *         description: Falha no login
+ */
+router.post('/login', async (req, res) => {
+  try {
+    const { user, password } = req.body;
+    const usuario = await getUserByLogin(user);
 
-const createVaga = async (vaga) => {
-  const queryVaga = `
-    INSERT INTO vaga (titulo, descricao, salario, localizacao, requisitos, data_publicacao, emprego_id, tipo_filtro)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-  `;
-  const [result] = await db.execute(queryVaga, [
-    vaga.titulo, vaga.descricao, vaga.salario, vaga.localizacao, 
-    vaga.requisitos, vaga.data_publicacao, vaga.emprego_id, vaga.tipo_filtro
-  ]);
-  return result.insertId;
-};
+    if (usuario) {
+      if (password === usuario.senha) {
+        res.json({ success: 'Efetuado com sucesso!' });
+      } else {
+        res.json({ fail: 'Senha incorreta!' });
+      }
+    } else {
+      res.json({ fail: 'Usuário não encontrado!' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-const getFiltroId = async (tipo) => {
-  const query = "SELECT id FROM filtro_vaga WHERE tipo = ?;";
-  const [rows, fields] = await db.execute(query, [tipo]);
-  return rows[0] ? rows[0].id : null;
-};
-
-const createFiltro = async (tipo) => {
-  const query = "INSERT INTO filtro_vaga (tipo) VALUES (?);";
-  const [result] = await db.execute(query, [tipo]);
-  return result.insertId;
-};
-
-const associateVagaFiltro = async (vagaId, filtroId) => {
-  const query = "INSERT INTO vaga_filtro (vaga_id, filtro_id) VALUES (?, ?);";
-  await db.execute(query, [vagaId, filtroId]);
-};
-
-const getVagaById = async (id) => {
-  const query = "SELECT * FROM vaga WHERE id = ?;";
-  const [rows, fields] = await db.execute(query, [id]);
-  return rows.length > 0 ? rows[0] : null;
-};
-
-module.exports = {
-  getAllVagas,
-  getVagasByTipo,
-  createVaga,
-  getFiltroId,
-  createFiltro,
-  associateVagaFiltro,
-  getVagaById
-};
+module.exports = router;

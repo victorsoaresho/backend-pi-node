@@ -24,9 +24,9 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API para gerenciar vagas e usuários',
       contact: {
-        name: 'TecJobs',
-        url: '',
-        email: 'victorsoaresho@gmail.com'
+        name: 'Seu Nome',
+        url: 'http://seusite.com',
+        email: 'seuemail@dominio.com'
       },
       servers: [
         {

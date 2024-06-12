@@ -11,10 +11,11 @@ const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'http://localhost:4200', // Adicione a origem permitida
+  origin: '*', // Permite qualquer origem
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 const swaggerOptions = {
   swaggerDefinition: {

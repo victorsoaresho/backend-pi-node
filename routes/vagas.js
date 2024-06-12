@@ -144,7 +144,7 @@ router.post('/inserir', async (req, res) => {
     const vaga = req.body;
 
     // Verificar se a vaga já está cadastrada
-    const vagasExistentes = await getVagasByTipo(vaga.id);
+    const vagasExistentes = await getVagasByTipo(vaga.titulo);
     if (vagasExistentes.length > 0) {
       return res.status(409).json({ fail: 'Vaga já cadastrada!' });
     }

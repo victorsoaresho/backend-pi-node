@@ -8,13 +8,9 @@ const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const corsOptions = {
-  origin: 'https://tecjobs2.onrender.com/',
-  optionsSucessStatus:200,
-};
 
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
+app.use(cors());
 
 const swaggerOptions = {
   swaggerDefinition: {

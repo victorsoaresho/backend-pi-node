@@ -10,11 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
-app.use(cors({
-  origin: '*', // Permite qualquer origem
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 
 const swaggerOptions = {
   swaggerDefinition: {
